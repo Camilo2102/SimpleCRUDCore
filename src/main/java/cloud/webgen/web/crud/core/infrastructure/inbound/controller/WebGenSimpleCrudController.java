@@ -4,6 +4,7 @@ import cloud.webgen.web.commons.exceptions.HttpException;
 import cloud.webgen.web.crud.core.domain.enums.SimpleCRUDUseCaseNames;
 import cloud.webgen.web.crud.core.domain.ports.*;
 import cloud.webgen.web.crud.core.infrastructure.inbound.utils.BeanProjectFinder;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/simpleCrud")
+@Hidden
+@RequestMapping("/api/v2")
 public class WebGenSimpleCrudController {
     private final BeanProjectFinder beanServiceFinder;
 
@@ -36,7 +38,7 @@ public class WebGenSimpleCrudController {
      */
     @RequestMapping(value = "/{variable}", method = RequestMethod.GET)
     public ResponseEntity<?> getMethod(@PathVariable("variable") String variable) throws HttpException {
-        SimpleReadAllService<?> readService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.GET_ALL, SimpleReadAllService.class);
+        SimpleReadAllService<?> readService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.GET_ALL.getUseCase(), SimpleReadAllService.class);
         List<?> allData = readService.getAll();
         return new ResponseEntity<>(allData, HttpStatus.OK);
     }
@@ -51,7 +53,7 @@ public class WebGenSimpleCrudController {
      */
     @RequestMapping(value = "/{variable}/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getMethod(@PathVariable("variable") String variable, @PathVariable("id") String id) throws HttpException {
-        SimpleReadOneService<?> readService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.GET_BY_ID, SimpleReadOneService.class);
+        SimpleReadOneService<?> readService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.GET_BY_ID.getUseCase(), SimpleReadOneService.class);
         Object foundData = readService.getOne(id);
         return new ResponseEntity<>(foundData, HttpStatus.OK);
     }
@@ -67,7 +69,7 @@ public class WebGenSimpleCrudController {
      */
     @RequestMapping(value = "/paged/{variable}", method = RequestMethod.GET)
     public ResponseEntity<?> getMethod(@PathVariable("variable") String variable, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size) throws HttpException {
-        SimpleReadPagedService<?> readService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.GET_ALL_PAGED, SimpleReadPagedService.class);
+        SimpleReadPagedService<?> readService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.GET_ALL_PAGED.getUseCase(), SimpleReadPagedService.class);
         List<?> foundData = readService.getAllPaged(PageRequest.of(page, size));
         return new ResponseEntity<>(foundData, HttpStatus.OK);
     }
@@ -82,7 +84,7 @@ public class WebGenSimpleCrudController {
      */
     @RequestMapping(value = "/{variable}", method = RequestMethod.POST)
     public ResponseEntity<?> postMethod(@PathVariable("variable") String variable, @RequestBody Object body) throws HttpException {
-        SimpleCreateService<?> crudService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.CREATE, SimpleCreateService.class);
+        SimpleCreateService<?> crudService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.CREATE.getUseCase(), SimpleCreateService.class);
         Object savedData = crudService.save(body);
         return new ResponseEntity<>(savedData, HttpStatus.CREATED);
     }
@@ -97,7 +99,7 @@ public class WebGenSimpleCrudController {
      */
     @RequestMapping(value = "/{variable}", method = RequestMethod.PUT)
     public ResponseEntity<?> putMethod(@PathVariable("variable") String variable, @RequestBody Object body) throws HttpException {
-        SimpleUpdateService<?> updateService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.UPDATE, SimpleUpdateService.class);
+        SimpleUpdateService<?> updateService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.UPDATE.getUseCase(), SimpleUpdateService.class);
         Object updatedData = updateService.update(body);
         return new ResponseEntity<>(updatedData, HttpStatus.OK);
     }
@@ -112,8 +114,8 @@ public class WebGenSimpleCrudController {
      */
     @RequestMapping(value = "/{variable}/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteMethod(@PathVariable("variable") String variable, @PathVariable("id") String id) throws HttpException {
-        SimpleDeleteService<?> deleteService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.DELETE, SimpleDeleteService.class);
+        SimpleDeleteService<?> deleteService = this.beanServiceFinder.findUseCaseBeanByName(variable + SimpleCRUDUseCaseNames.DELETE.getUseCase(), SimpleDeleteService.class);
         Object deletedData = deleteService.delete(id);
-        return new ResponseEntity<>(deletedData, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(deletedData, HttpStatus.OK);
     }
 }

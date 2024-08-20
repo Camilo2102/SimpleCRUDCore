@@ -6,7 +6,7 @@
 
     <groupId>cloud.webgen.crud.core</groupId>
     <artifactId>SimpleCRUD</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.10</version>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Commons for webgen projects</description>
@@ -29,9 +29,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/Camilo2102/WebGen-Commons</connection>
-        <developerConnection>scm:git:ssh://github.com/Camilo2102/WebGen-Commons</developerConnection>
-        <url>https://github.com/Camilo2102/WebGen-Commons</url>
+        <connection>scm:git:git://github.com/Camilo2102/SimpleCRUDCore</connection>
+        <developerConnection>scm:git:ssh://github.com/Camilo2102/SimpleCRUDCore</developerConnection>
+        <url>https://github.com/Camilo2102/SimpleCRUDCore</url>
     </scm>
 
     <properties>
@@ -66,6 +66,12 @@
              <artifactId>lombok</artifactId>
              <optional>true</optional>
              <version>1.18.30</version>
+         </dependency>
+
+         <dependency>
+             <groupId>org.springdoc</groupId>
+             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+             <version>2.5.0</version>
          </dependency>
      </dependencies>
 

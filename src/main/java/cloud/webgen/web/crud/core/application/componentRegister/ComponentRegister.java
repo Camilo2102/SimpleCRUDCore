@@ -4,8 +4,10 @@ import cloud.webgen.web.commons.utils.BeanLocator;
 import cloud.webgen.web.commons.utils.StringUtils;
 import cloud.webgen.web.crud.core.domain.annotations.AutoControlable;
 import cloud.webgen.web.crud.core.domain.enums.SimpleCRUDMethods;
+import cloud.webgen.web.crud.core.domain.ports.DocumentationService;
 import cloud.webgen.web.crud.core.domain.ports.WebgenAuditRepository;
 import cloud.webgen.web.crud.core.infrastructure.inbound.utils.BeanProjectFinder;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ public class ComponentRegister {
     private final BeanLocator beanLocator;
     private final BeanProjectFinder beanProjectFinder;
     private final ApplicationContext applicationContext;
+    private final DocumentationService documentationService;
 
     @PostConstruct
     public void init() throws Exception {
@@ -64,6 +67,8 @@ public class ComponentRegister {
                             .addConstructorArgValue(repository)
                             .getBeanDefinition();
                 }
+
+                this.documentationService.generateDocumentation(crudMethod, key, beanClass);
 
                 beanFactory.registerBeanDefinition(key + crudMethod.getName() + "Service", crudUseCase);
                 log.info("Service created '{}' for repository '{}'",key + crudMethod.getName() + "Service", actualRepositoryName);

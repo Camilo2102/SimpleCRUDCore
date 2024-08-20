@@ -1,6 +1,7 @@
 package cloud.webgen.web.crud.core.domain.annotations;
 
 import cloud.webgen.web.crud.core.domain.enums.SimpleCRUDMethods;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
 @Component
+@Schema
 public @interface AutoControlable {
     String repositoryName() default "";
 
